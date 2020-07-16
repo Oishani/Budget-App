@@ -95,7 +95,7 @@ var budgetController = (function () {
     },
 
     calculateBudget: function () {
-      // Calculate total income and expenses
+      // calculate total income and expenses
       calculateTotal('exp');
       calculateTotal('inc');
 
@@ -114,14 +114,14 @@ var budgetController = (function () {
 
     calculatePercentages: function () {
       /*
-      a=20
-      b=10
-      c=40
-      income = 100
-      a=20/100=20%
-      b=10/100=10%
-      c=40/100=40%
-      */
+          a=20
+          b=10
+          c=40
+          income = 100
+          a=20/100=20%
+          b=10/100=10%
+          c=40/100=40%
+          */
 
       data.allItems.exp.forEach(function (cur) {
         cur.calcPercentage(data.totals.inc);
@@ -142,6 +142,10 @@ var budgetController = (function () {
         totalExp: data.totals.exp,
         percentage: data.percentage,
       };
+    },
+
+    testing: function () {
+      console.log(data);
     },
   };
 })();
@@ -167,13 +171,13 @@ var UIController = (function () {
   var formatNumber = function (num, type) {
     var numSplit, int, dec, type;
     /*
-        + or - before number
-        exactly 2 decimal points
-        comma separating the thousands
+          + or - before number
+          exactly 2 decimal points
+          comma separating the thousands
 
-        2310.4567 -> + 2,310.46
-        2000 -> + 2,000.00
-        */
+          2310.4567 -> + 2,310.46
+          2000 -> + 2,000.00
+          */
 
     num = Math.abs(num);
     num = num.toFixed(2);
@@ -314,6 +318,22 @@ var UIController = (function () {
         months[month] + ', ' + year;
     },
 
+    changedType: function () {
+      var fields = document.querySelectorAll(
+        DOMstrings.inputType +
+          ',' +
+          DOMstrings.inputDescription +
+          ',' +
+          DOMstrings.inputValue
+      );
+
+      nodeListForEach(fields, function (cur) {
+        cur.classList.toggle('red-focus');
+      });
+
+      document.querySelector(DOMstrings.inputBtn).classList.toggle('red');
+    },
+
     getDOMstrings: function () {
       return DOMstrings;
     },
@@ -332,6 +352,7 @@ var controller = (function (budgetCtrl, UICtrl) {
         ctrlAddItem();
       }
     });
+
     document
       .querySelector(DOM.container)
       .addEventListener('click', ctrlDeleteItem);
