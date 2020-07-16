@@ -201,6 +201,13 @@ var controller = (function (budgetCtrl, UICtrl) {
         ctrlAddItem();
       }
     });
+    document
+      .querySelector(DOM.container)
+      .addEventListener('click', ctrlDeleteItem);
+
+    document
+      .querySelector(DOM.inputType)
+      .addEventListener('change', UICtrl.changedType);
   };
 
   var updateBudget = function () {
@@ -234,6 +241,31 @@ var controller = (function (budgetCtrl, UICtrl) {
       updateBudget();
 
       // 6. Calculate and update percentages
+    }
+  };
+
+  var ctrlDeleteItem = function (event) {
+    var itemID, splitID, type, ID;
+
+    itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+
+    if (itemID) {
+      //inc-1
+      splitID = itemID.split('-');
+      type = splitID[0];
+      ID = parseInt(splitID[1]);
+
+      // 1. Delete the item from the data structure
+      budgetCtrl.deleteItem(type, ID);
+
+      // 2. Delete the item from the UI
+      UICtrl.deleteListItem(itemID);
+
+      // 3. Update and show the new budget
+      updateBudget();
+
+      // 4. Calculate and update percentages
+      updatePercentages();
     }
   };
 
